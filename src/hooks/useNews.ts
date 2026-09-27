@@ -4,17 +4,23 @@ import { useQueryParams } from "./useQueryParams"
 
 export default function useNews() {
   const [data, setData] = useState<Article[]>([])
-  const { search, page } = useQueryParams()
+  const [params] = useQueryParams()
+  const category = params?.category || "news"
 
   useEffect(() => {
-    console.log(search)
     const fetchNews = async () => {
-      const res = await fetch(import.meta.env.VITE_API_URL + "news")
+      const res = await fetch(
+        import.meta.env.VITE_API_URL +
+          "news?" +
+          new URLSearchParams({
+            category,
+          }).toString()
+      )
       const resJSON: Article[] = await res.json()
       setData(resJSON)
     }
     fetchNews()
-  }, [search])
+  }, [category])
 
   return {
     data,
