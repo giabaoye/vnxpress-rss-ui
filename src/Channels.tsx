@@ -99,7 +99,6 @@ export default function Channels() {
             />
             <div className="flex flex-col">
               <span className="text-xl">{channel.label}</span>
-              {/* <span className="text-xs text-muted-foreground mt-0.5">Active Session</span> */}
             </div>
           </div>
         </SelectTrigger>
@@ -120,7 +119,6 @@ export default function Channels() {
       </Select>
       <Select
         items={channel?.categories}
-        // defaultValue="news"
         value={category}
         onValueChange={handleCategoryChange}
       >
