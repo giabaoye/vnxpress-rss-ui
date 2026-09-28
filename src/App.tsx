@@ -14,7 +14,7 @@ export function App() {
           <div>
             <section className="flex flex-col gap-5 divide-y-2 divide-gray-400">
               {loading ? (
-                <div className="flex w-80 flex-col pb-5">
+                <div className="flex w-90 flex-col pb-5">
                   <Skeleton className="mb-2 h-10" />
                   <Skeleton className="mb-3 h-5" />
                   <Skeleton className="aspect-video w-full" />
@@ -22,25 +22,27 @@ export function App() {
               ) : (
                 data.map((d, index) => (
                   <div key={d.id} className="flex flex-col pb-5">
-                    <h3 className="mb-2 text-xl font-bold">{d.title}</h3>
-                    <p className="text-lg">{d.description}</p>
-                    <img
-                      src={d.image.href}
-                      alt={d.title}
-                      loading={index === 0 ? "eager" : "lazy"}
-                      className="aspect-video w-full rounded-xl object-cover"
-                    />
+                    <a href={d.link} target="_blank" rel="noreferrer">
+                      <h3 className="mb-2 text-xl font-bold">{d.title}</h3>
+                      <p className="text-lg">{d.description}</p>
+                      <img
+                        src={d.image.href}
+                        alt={d.title}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        className="aspect-video w-full rounded-xl object-cover"
+                      />
+                    </a>
                   </div>
                 ))
               )}
             </section>
-            <p>You may now add components and start building.</p>
+            {/* <p>You may now add components and start building.</p>
             <p>We&apos;ve already added the button component for you.</p>
-            <Button className="mt-2">Button</Button>
+            <Button className="mt-2">Button</Button> */}
           </div>
-          <div className="font-mono text-xs text-muted-foreground">
+          {/* <div className="font-mono text-xs text-muted-foreground">
             (Press <kbd>d</kbd> to toggle dark mode)
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

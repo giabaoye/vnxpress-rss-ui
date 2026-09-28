@@ -17,49 +17,39 @@ const channels: ChannelItem[] = [
     value: Channel.VnExpress,
     categories: [
       {
+        label: "Thời sự",
+        value: "news",
+      },
+      {
         label: "Thế giới",
         value: "global",
       },
       {
-        label: "Thời sự",
-        value: "news",
+        label: "Tin xem nhiều",
+        value: "mostwatch",
+      },
+      {
+        label: "Giải trí",
+        value: "giaitri",
+      },
+      {
+        label: "Giáo dục",
+        value: "giaoduc",
       },
     ],
-  },
-]
-
-const categories = [
-  {
-    label: "Thời sự",
-    value: "news",
-  },
-  {
-    label: "Thế giới",
-    value: "global",
   },
 ]
 
 export default function Channels() {
   const [, setParams] = useQueryParams()
 
-  const [channel, setChannel] = useState<ChannelItem>({
-    label: "VnExpress",
-    value: "VnExpress",
-    categories: [
-      {
-        label: "Thế giới",
-        value: "global",
-      },
-      {
-        label: "Thời sự",
-        value: "news",
-      },
-    ],
-  })
-  const [category, setCategory] = useState<{ label: string; value: string }>({
-    label: "Thời sự",
-    value: "news",
-  })
+  const [channel, setChannel] = useState<ChannelItem>(channels[0])
+  const [category, setCategory] = useState<{ label: string; value: string }>(
+    channels[0]?.categories?.[0] ?? {
+      label: "Thời sự",
+      value: "news",
+    }
+  )
 
   const handleChannelChange = (value: Channel | null) => {
     if (!value) return
@@ -127,7 +117,7 @@ export default function Channels() {
         </SelectTrigger>
 
         <SelectContent alignItemWithTrigger={false}>
-          {categories.map((item) => (
+          {channel?.categories?.map((item) => (
             <SelectItem key={item.value} value={item} className="text-xl">
               {item.label}
             </SelectItem>
