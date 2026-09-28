@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import useNews from "./hooks/useNews"
 import Nav from "./Nav"
 import { Skeleton } from "@/components/ui/skeleton"

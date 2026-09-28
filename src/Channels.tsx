@@ -6,27 +6,29 @@ import {
 } from "@/components/ui/select"
 import { useQueryParams } from "./hooks/useQueryParams"
 import VNExpress from "/vnexpress.svg"
-import { useState } from "react"
+import TuoiTre from "/tuoi-tre.ico"
+import DanTri from "/dantri.ico"
+import { useCallback, useState } from "react"
 import { Channel, type Category, type ChannelItem } from "./common/types"
 import { getChannelLabel } from "./common/utils"
 
 const channels: ChannelItem[] = [
   {
     id: Channel.VnExpress,
-    label: getChannelLabel("VnExpress"),
+    label: getChannelLabel(Channel.VnExpress),
     value: Channel.VnExpress,
     categories: [
       {
         label: "Thời sự",
-        value: "news",
+        value: "thoisu",
       },
       {
         label: "Thế giới",
-        value: "global",
+        value: "thegioi",
       },
       {
         label: "Tin xem nhiều",
-        value: "mostwatch",
+        value: "tinxemnhieu",
       },
       {
         label: "Giải trí",
@@ -35,6 +37,40 @@ const channels: ChannelItem[] = [
       {
         label: "Giáo dục",
         value: "giaoduc",
+      },
+    ],
+  },
+  {
+    id: Channel.TuoiTre,
+    label: getChannelLabel(Channel.TuoiTre),
+    value: Channel.TuoiTre,
+    categories: [
+      {
+        label: "Thời sự",
+        value: "thoisu",
+      },
+      {
+        label: "Thế giới",
+        value: "thegioi",
+      },
+      {
+        label: "Văn hoá",
+        value: "vanhoa",
+      },
+      {
+        label: "Thể thao",
+        value: "thethao",
+      },
+    ],
+  },
+  {
+    id: Channel.DanTri,
+    label: getChannelLabel(Channel.DanTri),
+    value: Channel.DanTri,
+    categories: [
+      {
+        label: "Thời sự",
+        value: "thoisu",
       },
     ],
   },
@@ -53,15 +89,13 @@ export default function Channels() {
 
   const handleChannelChange = (value: Channel | null) => {
     if (!value) return
-    const currentChannel = channels.find((c) => c.value === value) ?? {
-      label: "VnExpress",
-      value: "VnExpress",
-    }
-    const currentCategory = currentChannel.categories?.[0] ?? {
-      label: "Thời sự",
-      value: "news",
-    }
-    setParams({ channel: currentChannel.id, category: currentCategory.value })
+    const currentChannel =
+      channels.find((c) => c.value === value) ?? channels[0]
+    const currentCategory = currentChannel.categories[0]
+    setParams({
+      channel: currentChannel.id?.toLowerCase(),
+      category: currentCategory.value,
+    })
     setChannel(currentChannel)
     setCategory(currentCategory)
   }
@@ -71,6 +105,17 @@ export default function Channels() {
     setParams("category", value.value)
     setCategory(value)
   }
+
+  const getImgSource = useCallback((channel: ChannelItem) => {
+    switch (channel.id) {
+      case Channel.VnExpress:
+        return VNExpress
+      case Channel.TuoiTre:
+        return TuoiTre
+      case Channel.DanTri:
+        return DanTri
+    }
+  }, [])
 
   return (
     <div className="flex gap-5">
@@ -82,7 +127,7 @@ export default function Channels() {
         <SelectTrigger className="h-fit w-fit max-w-48 rounded-lg p-4 text-xl outline-none">
           <div className="flex items-center gap-3 text-left">
             <img
-              src={VNExpress}
+              src={getImgSource(channel)}
               alt="VnExpress Logo"
               className="h-6 w-auto"
               loading="eager"
@@ -95,9 +140,13 @@ export default function Channels() {
 
         <SelectContent alignItemWithTrigger={false}>
           {channels.map((item) => (
-            <SelectItem key={item.value} value={item.value} className="text-xl">
+            <SelectItem
+              key={item.value}
+              value={item.value}
+              className="px-4 py-2 text-xl"
+            >
               <img
-                src={VNExpress}
+                src={getImgSource(item)}
                 alt="VnExpress Logo"
                 className="h-6 w-auto"
                 loading="eager"
@@ -107,6 +156,7 @@ export default function Channels() {
           ))}
         </SelectContent>
       </Select>
+      {/* Category */}
       <Select
         items={channel?.categories}
         value={category}
@@ -118,7 +168,11 @@ export default function Channels() {
 
         <SelectContent alignItemWithTrigger={false}>
           {channel?.categories?.map((item) => (
-            <SelectItem key={item.value} value={item} className="text-xl">
+            <SelectItem
+              key={item.value}
+              value={item}
+              className="px-3 py-2 text-xl"
+            >
               {item.label}
             </SelectItem>
           ))}

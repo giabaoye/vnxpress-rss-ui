@@ -15,6 +15,8 @@ export type Article = {
 }
 export const Channel = {
   VnExpress: "VnExpress",
+  TuoiTre: "TuoiTre",
+  DanTri: "DanTri",
 } as const
 
 export type Channel = (typeof Channel)[keyof typeof Channel]
@@ -23,7 +25,7 @@ export type ChannelItem = {
   id?: Channel
   label: string
   value?: Channel
-  categories?: Array<{ label: string; value: string }>
+  categories: Array<{ label: string; value: string }>
 }
 
 export type Category = {

@@ -6,7 +6,8 @@ export default function useNews() {
   const [data, setData] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
   const [params] = useQueryParams()
-  const category = params?.category || "news"
+  const category = params?.category || "thoisu"
+  const channel = params?.channel || "vnexpress"
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -16,6 +17,7 @@ export default function useNews() {
           "news?" +
           new URLSearchParams({
             category,
+            channel,
           }).toString()
       )
       const resJSON: Article[] = await res.json()
@@ -23,7 +25,7 @@ export default function useNews() {
       setLoading(false)
     }
     fetchNews()
-  }, [category])
+  }, [category, channel])
 
   return {
     data,

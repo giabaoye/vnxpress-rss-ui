@@ -15,6 +15,10 @@ export function getChannelLabel(id: Channel) {
   switch (id) {
     case "VnExpress":
       return "VnExpress"
+    case "TuoiTre":
+      return "Tuổi Trẻ"
+    case "DanTri":
+      return "Dân Trí"
     default:
       return "Unknown"
   }
