@@ -1,6 +1,13 @@
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card"
 import useNews from "./hooks/useNews"
 import Nav from "./Nav"
 import { Skeleton } from "@/components/ui/skeleton"
+import { ExternalLink } from "lucide-react"
 
 export function App() {
   const { data, loading } = useNews()
@@ -11,7 +18,7 @@ export function App() {
       <div className="flex flex-1 overflow-y-auto p-6">
         <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
           <div>
-            <section className="flex flex-col gap-5 divide-y-2 divide-gray-400">
+            <section className="flex flex-col gap-3">
               {loading ? (
                 <div className="flex w-90 flex-col pb-5">
                   <Skeleton className="mb-2 h-10" />
@@ -19,29 +26,32 @@ export function App() {
                   <Skeleton className="aspect-video w-full" />
                 </div>
               ) : (
-                data.map((d, index) => (
-                  <div key={d.id} className="flex flex-col pb-5">
-                    <a href={d.link} target="_blank" rel="noreferrer">
-                      <h3 className="mb-2 text-xl font-bold">{d.title}</h3>
-                      <p className="text-lg">{d.description}</p>
+                data.map((d) => (
+                  <div key={d.id} className="flex flex-col pb-3">
+                    <Card className="relative mx-auto w-full max-w-sm pt-0">
                       <img
-                        src={d.image.href}
+                        src={d.image}
                         alt={d.title}
-                        loading={index === 0 ? "eager" : "lazy"}
-                        className="aspect-video w-full rounded-xl object-cover"
+                        className="aspect-video w-full rounded-t-xl object-cover"
                       />
-                    </a>
+                      <CardHeader>
+                        <CardTitle>{d.title}</CardTitle>
+                        <CardDescription>
+                          <a href={d.link} target="_blank" rel="noreferrer">
+                            {d.description}{" "}
+                            <ExternalLink
+                              className="relative -top-0.5 inline"
+                              size={12}
+                            />
+                          </a>
+                        </CardDescription>
+                      </CardHeader>
+                    </Card>
                   </div>
                 ))
               )}
             </section>
-            {/* <p>You may now add components and start building.</p>
-            <p>We&apos;ve already added the button component for you.</p>
-            <Button className="mt-2">Button</Button> */}
           </div>
-          {/* <div className="font-mono text-xs text-muted-foreground">
-            (Press <kbd>d</kbd> to toggle dark mode)
-          </div> */}
         </div>
       </div>
     </div>
