@@ -5,7 +5,7 @@ import {
   CardDescription,
 } from "@/components/ui/card"
 import useNews from "./hooks/useNews"
-import Nav from "./Nav"
+import Navigation from "./layouts/Navigation/Navigation"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ExternalLink } from "lucide-react"
 
@@ -14,7 +14,7 @@ export function App() {
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
-      <Nav />
+      <Navigation />
       <div className="flex flex-1 overflow-y-auto p-6">
         <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
           <div>

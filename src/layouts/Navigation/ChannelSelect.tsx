@@ -4,13 +4,12 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select"
-import { useQueryParams } from "./hooks/useQueryParams"
+import { useSearchParams } from "react-router"
 import VNExpress from "/vnexpress.svg"
 import TuoiTre from "/tuoi-tre.ico"
 import DanTri from "/dantri.ico"
-import { useCallback, useState } from "react"
-import { Channel, type Category, type ChannelItem } from "./common/types"
-import { getChannelLabel } from "./common/utils"
+import { Channel, type ChannelItem } from "@/shared/types"
+import { getChannelLabel } from "@/shared/utils"
 
 const channels: ChannelItem[] = [
   {
@@ -76,58 +75,53 @@ const channels: ChannelItem[] = [
   },
 ]
 
-const getCategories = (channel: string | undefined): string[] => {
-  switch (channel?.toLowerCase()) {
-    case Channel.TuoiTre.toLowerCase():
-      return ["thoisu", "thegioi", "vanhoa", "thethao"]
-    case Channel.DanTri.toLowerCase():
-      return ["thoisu"]
-    case Channel.VnExpress.toLowerCase():
-    default:
-      return ["thoisu", "thegioi", "tinxemnhieu", "giaitri", "giaoduc"]
+function getImgSource(channel: ChannelItem) {
+  switch (channel.id) {
+    case Channel.VnExpress:
+      return VNExpress
+    case Channel.TuoiTre:
+      return TuoiTre
+    case Channel.DanTri:
+      return DanTri
   }
 }
 
-export default function Channels() {
-  const [params, setParams] = useQueryParams()
+export default function ChannelSelect() {
+  const [params, setParams] = useSearchParams()
 
-  const [channel, setChannel] = useState<Channel>(params.channel as Channel)
-  const [category, setCategory] = useState<string>(
-    params.category ?? getCategories(params.channel)[0]
-  )
+  const channel =
+    channels.find(
+      (item) => item.id.toLowerCase() === params.get("channel")?.toLowerCase()
+    ) ?? channels[0]
+  const category =
+    channel.categories.find((item) => item.value === params.get("category")) ??
+    channel.categories[0]
+
+  const updateParams = (updates: Record<string, string>) => {
+    setParams((current) => {
+      const next = new URLSearchParams(current)
+      Object.entries(updates).forEach(([key, value]) => next.set(key, value))
+      return next
+    })
+  }
 
   const handleChannelChange = (value: Channel | null) => {
     if (!value) return
-    const currentChannel =
-      channels.find((c) => c.value === value) ?? channels[0]
-    const currentCategory = currentChannel.categories[0]
-    setParams({
-      channel: currentChannel.id?.toLowerCase(),
-      category: currentCategory.value,
+    const nextChannel = channels.find((item) => item.value === value)
+    if (!nextChannel) return
+    updateParams({
+      channel: nextChannel.id.toLowerCase(),
+      category: nextChannel.categories[0].value,
     })
-    setChannel(currentChannel)
-    setCategory(currentCategory)
   }
 
-  const handleCategoryChange = (value: Category | null) => {
+  const handleCategoryChange = (value: string | null) => {
     if (!value) return
-    setParams("category", value.value)
-    setCategory(value)
+    updateParams({ category: value })
   }
-
-  const getImgSource = useCallback((channel: ChannelItem) => {
-    switch (channel.id) {
-      case Channel.VnExpress:
-        return VNExpress
-      case Channel.TuoiTre:
-        return TuoiTre
-      case Channel.DanTri:
-        return DanTri
-    }
-  }, [])
 
   return (
-    <div className="flex gap-5">
+    <div className="mt-2 flex w-full gap-5 bg-white px-6 py-2.5">
       <Select
         items={channels.map((c) => ({ label: c.label, value: c.value }))}
         value={channel.value}
@@ -167,8 +161,8 @@ export default function Channels() {
       </Select>
       {/* Category */}
       <Select
-        items={channel?.categories}
-        value={category}
+        items={channel.categories}
+        value={category.value}
         onValueChange={handleCategoryChange}
       >
         <SelectTrigger className="h-fit w-fit max-w-48 rounded-lg p-4 text-xl">
@@ -176,10 +170,10 @@ export default function Channels() {
         </SelectTrigger>
 
         <SelectContent alignItemWithTrigger={false}>
-          {channel?.categories?.map((item) => (
+          {channel.categories.map((item) => (
             <SelectItem
               key={item.value}
-              value={item}
+              value={item.value}
               className="px-3 py-2 text-xl"
             >
               {item.label}

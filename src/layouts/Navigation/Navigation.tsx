@@ -1,6 +1,6 @@
-import Channels from "./Channels"
+import ChannelSelect from "./ChannelSelect"
 
-export default function Nav() {
+export default function Navigation() {
   return (
     <nav className="flex h-30 w-full shrink-0 flex-col flex-wrap items-baseline justify-between border-b-2 bg-[#0041c2]">
       <div className="flex flex-wrap items-baseline justify-between bg-[#0041c2] px-6 py-2.5">
@@ -10,9 +10,7 @@ export default function Nav() {
           </span>
         </div>
       </div>
-      <div className="mt-2 w-full bg-white px-6 py-2.5">
-        <Channels />
-      </div>
+      <ChannelSelect />
     </nav>
   )
 }

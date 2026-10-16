@@ -1,3 +1,4 @@
+/* oxlint-disable react/only-export-components -- The variant helper is part of this component's public API. */
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"

@@ -15,9 +15,9 @@ export const Channel = {
 export type Channel = (typeof Channel)[keyof typeof Channel]
 
 export type ChannelItem = {
-  id?: Channel
+  id: Channel
   label: string
-  value?: Channel
+  value: Channel
   categories: Array<{ label: string; value: string }>
 }
 
