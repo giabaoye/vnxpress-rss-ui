@@ -25,6 +25,8 @@ export function App() {
                   <Skeleton className="mb-3 h-5" />
                   <Skeleton className="aspect-video w-full" />
                 </div>
+              ) : !data.length ? (
+                <div>Something went wrong</div>
               ) : (
                 data.map((d) => (
                   <div key={d.id} className="flex flex-col pb-3">

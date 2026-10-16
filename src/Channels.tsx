@@ -76,15 +76,24 @@ const channels: ChannelItem[] = [
   },
 ]
 
-export default function Channels() {
-  const [, setParams] = useQueryParams()
+const getCategories = (channel: string | undefined): string[] => {
+  switch (channel?.toLowerCase()) {
+    case Channel.TuoiTre.toLowerCase():
+      return ["thoisu", "thegioi", "vanhoa", "thethao"]
+    case Channel.DanTri.toLowerCase():
+      return ["thoisu"]
+    case Channel.VnExpress.toLowerCase():
+    default:
+      return ["thoisu", "thegioi", "tinxemnhieu", "giaitri", "giaoduc"]
+  }
+}
 
-  const [channel, setChannel] = useState<ChannelItem>(channels[0])
-  const [category, setCategory] = useState<{ label: string; value: string }>(
-    channels[0]?.categories?.[0] ?? {
-      label: "Thời sự",
-      value: "news",
-    }
+export default function Channels() {
+  const [params, setParams] = useQueryParams()
+
+  const [channel, setChannel] = useState<Channel>(params.channel as Channel)
+  const [category, setCategory] = useState<string>(
+    params.category ?? getCategories(params.channel)[0]
   )
 
   const handleChannelChange = (value: Channel | null) => {
