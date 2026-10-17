@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ExternalLink } from "lucide-react"
 
 export function App() {
-  const { data, loading } = useNews()
+  const news = useNews()
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
@@ -19,16 +19,18 @@ export function App() {
         <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
           <div>
             <section className="flex flex-col gap-3">
-              {loading ? (
+              {news.status === "loading" ? (
                 <div className="flex w-90 flex-col pb-5">
                   <Skeleton className="mb-2 h-10" />
                   <Skeleton className="mb-3 h-5" />
                   <Skeleton className="aspect-video w-full" />
                 </div>
-              ) : !data.length ? (
-                <div>Something went wrong</div>
+              ) : news.status === "error" ? (
+                <div>Không thể tải tin. Vui lòng thử lại sau.</div>
+              ) : news.status === "empty" ? (
+                <div>Chưa có bài viết nào trong danh mục này.</div>
               ) : (
-                data.map((d) => (
+                news.articles.map((d) => (
                   <div key={d.id} className="flex flex-col pb-3">
                     <Card className="relative mx-auto w-full max-w-sm pt-0">
                       <img

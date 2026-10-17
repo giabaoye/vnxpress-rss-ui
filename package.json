@@ -10,6 +10,7 @@
     "lint": "oxlint .",
     "format": "oxfmt \"**/*.{ts,tsx}\"",
     "format:check": "oxfmt --check \"**/*.{ts,tsx}\"",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "typecheck": "react-router typegen && tsc -b",
     "preview": "vite preview --outDir build/client"
   },
